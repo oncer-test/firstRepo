@@ -1,0 +1,19 @@
+{
+  "name": "exponential-fibonacci",
+  "version": "1.0.0",
+  "description": "Efficient exponential fibonacci computation library",
+  "main": "lib/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "build": "tsc"
+  },
+  "keywords": [
+    "fibonacci",
+    "exponential",
+    "algorithm",
+    "mathematics"
+  ],
+  "author": "oncer-test",
+  "license": "MIT"
+}
