@@ -18,8 +18,19 @@ class BinaryTree:
         self.root = root
 
     def level_order_traversal_left_to_right(self):
-        # Traverses tree level by level from left to right (top to bottom)
-        # Uses BFS approach with a deque to collect levels in forward order
+        # Breadth-First Search (BFS) traversal processing tree from top to bottom,
+        # with each level ordered left to right based on child insertion order
+        #
+        # Algorithm:
+        # 1. Initialize queue with root node
+        # 2. While queue has nodes:
+        #    a. Capture current queue length (nodes at this level)
+        #    b. Process exactly that many nodes from queue
+        #    c. For each node: extract value and enqueue its children (left then right)
+        #    d. Append collected node values as a single level to result
+        # 3. Return result as list of lists, one per tree level
+        #
+        # Key aspect: left child enqueued before right child maintains natural left-to-right order
         if not self.root:
             return []
 
@@ -35,7 +46,7 @@ class BinaryTree:
                 node = queue.popleft()
                 level_nodes.append(node.value)
 
-                # Add children to queue for next level
+                # Add children to queue for next level (left first ensures left-to-right order)
                 if node.left:
                     queue.append(node.left)
                 if node.right:
@@ -46,8 +57,19 @@ class BinaryTree:
         return result
 
     def level_order_traversal_right_to_left(self):
-        # Traverses tree level by level from right to left (top to bottom)
-        # Uses BFS approach with a deque to collect levels, reversing each level
+        # Breadth-First Search (BFS) traversal with level reversal to achieve right-to-left order
+        # Processes tree top-to-bottom, but displays each level with rightmost node first
+        #
+        # Algorithm:
+        # 1. Standard BFS: initialize queue with root
+        # 2. Process levels by dequeuing nodes in natural order (left-to-right arrival)
+        # 3. For each level, collect node values then reverse using Python's slice notation
+        # 4. Return levels in original top-to-bottom order but with nodes reversed
+        #
+        # Difference from level_order_traversal_left_to_right:
+        # - Same traversal pattern, different output format
+        # - Each level reversed individually using [::-1] slice
+        # - Useful for applications requiring right-first display without changing tree structure
         if not self.root:
             return []
 
@@ -58,7 +80,7 @@ class BinaryTree:
             level_size = len(queue)
             level_nodes = []
 
-            # Process all nodes at current level (left to right), then reverse for right-to-left order
+            # Process all nodes at current level (collected left to right, displayed right to left)
             for _ in range(level_size):
                 node = queue.popleft()
                 level_nodes.append(node.value)
@@ -69,14 +91,23 @@ class BinaryTree:
                 if node.right:
                     queue.append(node.right)
 
-            # Reverse the level to get right-to-left order
+            # Reverse the level to get right-to-left order display
             result.append(level_nodes[::-1])
 
         return result
 
     def reverse_level_order_traversal(self):
-        # Traverses tree level by level from left to right, but returns levels in reverse order
-        # Uses BFS approach with a deque to collect levels, then reverses
+        # Breadth-First Search with level order reversal - traversal from bottom to top
+        # Maintains left-to-right ordering within each level, but returns levels bottom-to-top
+        #
+        # Algorithm:
+        # 1. Perform standard BFS collecting all levels from root to leaves
+        # 2. Collect node values in natural left-to-right order for each level
+        # 3. After collecting all levels, reverse the entire result list
+        # 4. Return levels in bottom-to-top sequence
+        #
+        # Use case: Useful for processing trees from leaf level upward without recursion
+        # Note: Within each level, nodes remain left-to-right ordered
         if not self.root:
             return []
 
@@ -100,23 +131,33 @@ class BinaryTree:
 
             result.append(level_nodes)
 
-        # Reverse the order of levels
+        # Reverse the order of levels (bottom-to-top)
         return result[::-1]
 
     def reverse_inorder_traversal(self):
-        # Performs in-order traversal in reverse (right subtree -> node -> left subtree)
-        # Uses recursive DFS approach
+        # Reverse in-order traversal using Depth-First Search (DFS)
+        # Processes nodes: Right Subtree -> Current Node -> Left Subtree
+        # This is the opposite of standard in-order (Left -> Node -> Right)
+        #
+        # Algorithm:
+        # 1. Use recursive helper with call stack for DFS
+        # 2. For each node, recursively process right subtree first
+        # 3. Then append current node's value to result
+        # 4. Finally recursively process left subtree
+        # 5. Results in descending-like order (largest to smallest in BST)
+        #
+        # Complexity: O(n) time, O(h) space for recursion stack
         result = []
         self._reverse_inorder_helper(self.root, result)
         return result
 
     def _reverse_inorder_helper(self, node, result):
-        # Helper method for reverse in-order traversal
-        # Visits right subtree first, then node, then left subtree
+        # Recursive helper for reverse in-order traversal
+        # Implements the Right -> Current -> Left processing order
         if node is None:
             return
 
-        # Process right subtree first (for reverse order)
+        # Process right subtree first (gives reverse ordering effect)
         self._reverse_inorder_helper(node.right, result)
 
         # Process current node
@@ -126,47 +167,65 @@ class BinaryTree:
         self._reverse_inorder_helper(node.left, result)
 
     def reverse_preorder_traversal(self):
-        # Performs pre-order traversal in reverse (node -> right subtree -> left subtree)
-        # Uses recursive DFS approach
+        # Reverse pre-order traversal using Depth-First Search (DFS)
+        # Processes nodes: Current Node -> Right Subtree -> Left Subtree
+        # This reverses standard pre-order (Node -> Left -> Right) by swapping left/right
+        #
+        # Algorithm:
+        # 1. Recursively process in order: current node, then right, then left
+        # 2. Node is processed first (pre-order characteristic)
+        # 3. Right subtree processed before left (reverse characteristic)
+        # 4. Useful for tree copying and hierarchical processing in reverse
+        #
+        # Complexity: O(n) time, O(h) space for recursion stack
         result = []
         self._reverse_preorder_helper(self.root, result)
         return result
 
     def _reverse_preorder_helper(self, node, result):
-        # Helper method for reverse pre-order traversal
-        # Processes node first, then right subtree, then left subtree
+        # Recursive helper for reverse pre-order traversal
+        # Implements Node -> Right Subtree -> Left Subtree order
         if node is None:
             return
 
-        # Process current node first
+        # Process current node first (pre-order characteristic)
         result.append(node.value)
 
-        # Process right subtree before left (for reverse order)
+        # Process right subtree before left (reverse characteristic)
         self._reverse_preorder_helper(node.right, result)
 
         # Process left subtree
         self._reverse_preorder_helper(node.left, result)
 
     def reverse_postorder_traversal(self):
-        # Performs post-order traversal in reverse (right subtree -> left subtree -> node)
-        # Uses recursive DFS approach
+        # Reverse post-order traversal using Depth-First Search (DFS)
+        # Processes nodes: Right Subtree -> Left Subtree -> Current Node
+        # This reverses standard post-order (Left -> Right -> Node) by swapping subtrees
+        #
+        # Algorithm:
+        # 1. Recursively process: right subtree, then left subtree, then node
+        # 2. Node is processed last (post-order characteristic)
+        # 3. Right subtree processed before left (reverse characteristic)
+        # 4. Useful for cleanup operations in reverse (delete right, then left, then root)
+        #
+        # Complexity: O(n) time, O(h) space for recursion stack
         result = []
         self._reverse_postorder_helper(self.root, result)
         return result
 
     def _reverse_postorder_helper(self, node, result):
-        # Helper method for reverse post-order traversal
-        # Processes right subtree first, then left subtree, then node
+        # Recursive helper for reverse post-order traversal
+        # Implements Right Subtree -> Left Subtree -> Node order
         if node is None:
             return
 
-        # Process right subtree first
+        # Process right subtree first (reverse characteristic)
         self._reverse_postorder_helper(node.right, result)
 
         # Process left subtree
         self._reverse_postorder_helper(node.left, result)
 
-        # Process current node last
+        # Process current node last (post-order characteristic)
         result.append(node.value)
 
     def POST_RUN_SUMMARY_level_order_traversal_left_to_right(self):
@@ -181,8 +240,19 @@ class BinaryTree:
         return "level_order_traversal_left_to_right: BFS approach, O(n) time, processes levels left-to-right"
 
     def reverse_level_order_traversal_right_to_left(self):
-        # Traverses tree level by level from bottom to top, with each level ordered right to left
-        # Uses BFS approach to collect all levels, then reverses both level order and node order within each level
+        # Combined level order and node order reversal - bottom-to-top, right-to-left
+        # Performs standard BFS then applies two reversals:
+        # 1. Reverses the entire level list (bottom-to-top)
+        # 2. Reverses each individual level (right-to-left)
+        #
+        # Algorithm:
+        # 1. Standard BFS collection from root to leaves
+        # 2. After collecting all levels, apply list comprehension to reverse both:
+        #    - The list of levels using result[::-1]
+        #    - Each level individually using level[::-1]
+        # 3. Result: leaf-level first with rightmost nodes first at each level
+        #
+        # Use case: Tree processing from leaves to root with right-to-left directionality
         if not self.root:
             return []
 
@@ -193,7 +263,7 @@ class BinaryTree:
             level_size = len(queue)
             level_nodes = []
 
-            # Process all nodes at current level (left to right)
+            # Process all nodes at current level (left to right initially)
             for _ in range(level_size):
                 node = queue.popleft()
                 level_nodes.append(node.value)
@@ -208,6 +278,67 @@ class BinaryTree:
 
         # Reverse levels (bottom to top) and reverse each level (right to left)
         return [level[::-1] for level in result[::-1]]
+
+    def POST_RUN_SUMMARY(self):
+        # POST_RUN_SUMMARY for BinaryTree class
+        # Comprehensive summary of all tree traversal and reversal methods implemented
+        #
+        # This class provides 8 distinct traversal methods supporting both forward and reverse directions:
+        #
+        # Level-Order Traversals (BFS-based):
+        # - level_order_traversal_left_to_right: Top-to-bottom, left-to-right per level
+        #   Uses deque with standard left-child-first enqueuing order
+        #   Returns: [[1], [2, 3], [4, 5, 6, 7]]
+        #
+        # - level_order_traversal_right_to_left: Top-to-bottom, right-to-left per level
+        #   Collects nodes left-to-right but reverses each level for display
+        #   Returns: [[1], [3, 2], [7, 6, 5, 4]]
+        #
+        # - reverse_level_order_traversal: Bottom-to-top, left-to-right per level
+        #   Reverses the entire level list after BFS collection
+        #   Returns: [[4, 5, 6, 7], [2, 3], [1]]
+        #
+        # - reverse_level_order_traversal_right_to_left: Bottom-to-top, right-to-left per level
+        #   Combines full list reversal with individual level reversal
+        #   Returns: [[7, 6, 5, 4], [3, 2], [1]]
+        #
+        # Depth-First Traversals (Recursive DFS):
+        # - reverse_inorder_traversal: Right -> Node -> Left (reverse of left->node->right)
+        #   Returns: [7, 6, 5, 4, 3, 2, 1]
+        #
+        # - reverse_preorder_traversal: Node -> Right -> Left (processes node first)
+        #   Returns: [1, 3, 7, 6, 2, 5, 4]
+        #
+        # - reverse_postorder_traversal: Right -> Left -> Node (processes node last)
+        #   Returns: [7, 6, 3, 5, 4, 2, 1]
+        #
+        # Performance Characteristics:
+        # - Time Complexity: O(n) for all methods - each node visited exactly once
+        # - Space Complexity: O(w) for BFS (w=max level width), O(h) for DFS (h=tree height)
+        #
+        # Implementation Details:
+        # - BFS methods use deque from collections for O(1) append/popleft operations
+        # - DFS methods use recursive helpers to maintain clean traversal logic
+        # - List reversals ([::-1]) perform in O(n) time with Python's optimized implementation
+        # - No external dependencies beyond Python's built-in collections module
+        #
+        # Example Tree Structure Used in Testing:
+        #         1
+        #        / \
+        #       2   3
+        #      / \ / \
+        #     4  5 6  7
+        #
+        return {
+            "class": "BinaryTree",
+            "purpose": "Complete binary tree traversal with forward and reverse options",
+            "methods_count": 8,
+            "traversal_types": ["level-order", "depth-first"],
+            "directions": ["left-to-right", "right-to-left", "top-to-bottom", "bottom-to-top"],
+            "time_complexity": "O(n)",
+            "space_complexity": "O(w) or O(h)",
+            "key_feature": "Comprehensive reversal capabilities for tree exploration"
+        }
 
     def POST_RUN_SUMMARY_level_order_traversal_left_to_right(self):
         # Summary of the left-to-right level order traversal algorithm
