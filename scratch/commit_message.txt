@@ -1,0 +1,12 @@
+Add Claude ASCII Art Script
+
+- Implement Python script to print Claude ASCII art
+- Provide simple, safe implementation
+- Update README with usage instructions
+
+Detailed changes:
+- Create claude_ascii.py with ASCII art print function
+- Ensure PEP 8 compliance and code safety
+- Document potential future improvements
+
+🤖 Generated with Claude Code
