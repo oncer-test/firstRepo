@@ -9,18 +9,18 @@
 ## Exact ASCII Art Specification
 
 ```
- _____  _    _    ___   _   _  ____
-/ ____|| |  | |  / _ \ | | | |/ __ \
-| |    | |  | | | | | || | | | |  | |
-| |    | |  | | | | | || | | | |  | |
-| |____| |__| | | |_| || |_| | |__| |
- \_____|\____/   \___/  \___/ \____/
+ ____   _     _   _   _  ____
+/ ___| | |   | | | | | |/ ___|
+| |    | |   | | | | | | |
+| |    | |   | | | | | | |
+| |___ | |___| | | |_| | |___
+ \____||______/  \___/ \____|
 ```
 
 ### Design Rationale
 - Uses blocky characters for clear definition
 - Maintains consistent character height
-- Includes subtle shading and line connections
+- Includes subtle geometric shading
 - Readable in standard 80-column terminal
 - Centered representation of 'Claude'
 

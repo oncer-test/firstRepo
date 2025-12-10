@@ -1,0 +1,25 @@
+.artifacts/
+claude/
+claude/claude.md
+claude/skills/
+claude/skills/Skills.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.env/
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+.pytest_cache/
+
+# Misc
+.DS_Store
+*.log
