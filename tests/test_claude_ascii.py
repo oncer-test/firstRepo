@@ -12,6 +12,7 @@ def test_ascii_art_validation():
     assert not validate_ascii_art("")
     assert not validate_ascii_art(None)
     assert not validate_ascii_art("x" * 2000)  # Too long
+    assert len(max(CLAUDE_ASCII_ART.splitlines(), key=len)) <= 40  # Width check
 
 def test_render_claude_art():
     """Test ASCII art rendering."""
