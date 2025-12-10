@@ -7,6 +7,7 @@ Simple, safe ASCII art rendering module.
 - Safe rendering of Claude ASCII art
 - Monospace-friendly design
 - Secure validation mechanisms
+- Dynamic art rendering support
 
 ## Usage
 
