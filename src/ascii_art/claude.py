@@ -6,25 +6,42 @@ Safely displays predefined Claude ASCII art.
 """
 
 import sys
-from typing import TextIO, Optional
+from typing import TextIO, Optional, List
 
-def validate_ascii_art(art: str) -> bool:
+def is_ascii_only(text: str) -> bool:
+    """Check if a string contains only ASCII characters."""
+    return all(ord(char) < 128 for char in text)
+
+def validate_line_width(lines: List[str], max_width: int = 40) -> bool:
+    """Validate line width against max constraint."""
+    return all(len(line) <= max_width for line in lines)
+
+def validate_ascii_art(
+    art: str,
+    max_width: int = 40,
+    max_height: int = 6
+) -> bool:
     """
-    Validate ASCII art for safety.
+    Validate ASCII art against strict safety constraints.
 
     Args:
         art (str): ASCII art to validate
+        max_width (int): Maximum line width
+        max_height (int): Maximum number of lines
 
     Returns:
-        bool: True if art passes safety checks, False otherwise
+        bool: True if art passes all safety checks
     """
-    # Basic safety checks
+    if not art or not isinstance(art, str):
+        return False
+
+    lines = art.strip().splitlines()
+
     return (
-        art is not None and
-        isinstance(art, str) and
-        len(art) > 0 and
-        len(art) <= 1024 and  # Reasonable size limit
-        all(ord(char) < 128 for char in art)  # ASCII only
+        bool(lines) and
+        len(lines) <= max_height and
+        all(is_ascii_only(line) for line in lines) and
+        validate_line_width(lines, max_width)
     )
 
 def render_claude_art(
@@ -32,11 +49,11 @@ def render_claude_art(
     file: Optional[TextIO] = None
 ) -> None:
     """
-    Safely render Claude ASCII art.
+    Safely render Claude ASCII art to output stream.
 
     Args:
         art (str): ASCII art to render
-        file (Optional[TextIO]): Output stream, defaults to sys.stdout
+        file (TextIO, optional): Output destination, defaults to sys.stdout
 
     Raises:
         ValueError: If art fails validation
@@ -44,16 +61,14 @@ def render_claude_art(
     if not validate_ascii_art(art):
         raise ValueError("Invalid ASCII art")
 
-    print(art, file=file or sys.stdout)
+    print(art.strip(), file=file or sys.stdout)
 
 # Claude ASCII art constant
-CLAUDE_ASCII_ART = r''' _____  _    _    ___   _   _  ____
-/ ____|| |  | |  / _ \ | | | |/ __ \
-| |    | |  | | | | | || | | | |  | |
-| |    | |  | | | | | || | | | |  | |
-| |____| |__| | | |_| || |_| | |__| |
- \_____|\____/   \___/  \___/ \____/
-'''
+CLAUDE_ASCII_ART = r"""    _____  _    _  _____
+   / ____|/ \  | |/ ____|
+  | |    / _ \ | | |
+  | |   / ___ \| | |
+  |____/_/   \_\_|\_____|"""
 
 def main() -> None:
     """Entry point for rendering Claude ASCII art."""
