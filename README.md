@@ -7,6 +7,7 @@ Simple, safe ASCII art rendering module.
 - Safe rendering of Claude ASCII art
 - Monospace-friendly design
 - Secure validation mechanisms
+- Strict ASCII art constraints (40 chars max width, 6 lines max)
 
 ## Usage
 
@@ -24,3 +25,11 @@ Run tests with pytest:
 ```bash
 python3 -m pytest tests/
 ```
+
+## Design
+
+ASCII art is validated against strict constraints:
+- Maximum width: 40 characters
+- Maximum height: 6 lines
+- ASCII-only characters
+- Monospace readability
