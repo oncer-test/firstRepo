@@ -10,21 +10,32 @@ from typing import TextIO, Optional
 
 def validate_ascii_art(art: str) -> bool:
     """
-    Validate ASCII art for safety.
+    Validate ASCII art against strict design constraints.
+
+    Validates:
+    - Non-None input
+    - String type
+    - Non-empty string
+    - Maximum length of 1024 characters
+    - Strictly ASCII characters
+    - Maximum line width of 40 characters
+    - Maximum height of 6 lines
 
     Args:
         art (str): ASCII art to validate
 
     Returns:
-        bool: True if art passes safety checks, False otherwise
+        bool: True if art passes all validation checks, False otherwise
     """
-    # Basic safety checks
+    if art is None or not isinstance(art, str) or len(art) == 0:
+        return False
+
+    lines = art.splitlines()
     return (
-        art is not None and
-        isinstance(art, str) and
-        len(art) > 0 and
         len(art) <= 1024 and  # Reasonable size limit
-        all(ord(char) < 128 for char in art)  # ASCII only
+        all(ord(char) < 128 for char in art) and  # ASCII only
+        len(lines) <= 6 and  # Maximum height
+        all(len(line) <= 40 for line in lines)  # Maximum line width
     )
 
 def render_claude_art(
@@ -47,12 +58,12 @@ def render_claude_art(
     print(art, file=file or sys.stdout)
 
 # Claude ASCII art constant
-CLAUDE_ASCII_ART = r''' _____  _    _    ___   _   _  ____
-/ ____|| |  | |  / _ \ | | | |/ __ \
-| |    | |  | | | | | || | | | |  | |
-| |    | |  | | | | | || | | | |  | |
-| |____| |__| | | |_| || |_| | |__| |
- \_____|\____/   \___/  \___/ \____/
+CLAUDE_ASCII_ART = r''' _____  _     ____   _    _   ____
+/  __ \| |   / __ \ | |  | | / __ \
+| |    | |  | |  | || |  | || |  | |
+| |    | |  | |  | || |  | || |  | |
+| |____| |__| |__| || |__| || |__| |
+ \____/\_____\____/ \____/  \____/ |
 '''
 
 def main() -> None:
