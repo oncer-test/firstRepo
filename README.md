@@ -11,10 +11,10 @@ Simple, safe ASCII art rendering module.
 ## Usage
 
 ```python
-from src.ascii_art.claude import render_claude_art, CLAUDE_ASCII_ART
+from claude_ascii_art import render_claude_ascii_art
 
 # Display Claude ASCII art
-render_claude_art(CLAUDE_ASCII_ART)
+print(render_claude_ascii_art())
 ```
 
 ## Testing
@@ -22,5 +22,5 @@ render_claude_art(CLAUDE_ASCII_ART)
 Run tests with pytest:
 
 ```bash
-python3 -m pytest tests/
+python3 -m pytest
 ```
