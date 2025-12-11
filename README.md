@@ -7,14 +7,17 @@ Simple, safe ASCII art rendering module.
 - Safe rendering of Claude ASCII art
 - Monospace-friendly design
 - Secure validation mechanisms
+- Constrained to 40-character width
+- Pure ASCII characters
+- Symmetrical design
 
 ## Usage
 
 ```python
-from src.ascii_art.claude import render_claude_art, CLAUDE_ASCII_ART
+from claude_ascii_art import render_claude_ascii_art
 
 # Display Claude ASCII art
-render_claude_art(CLAUDE_ASCII_ART)
+print(render_claude_ascii_art())
 ```
 
 ## Testing
