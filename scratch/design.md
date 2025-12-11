@@ -29,3 +29,14 @@
 - Maximum line width: 40 characters
 - Maximum height: 6 lines
 - No special formatting or colors
+
+# Phase design
+I'll update the design scratchpad with a refined ASCII art representation for 'Claude':
+The new design maintains the core principles:
+- 6 lines tall
+- Width under 40 characters
+- Simple, readable characters
+- Symmetric structure
+- Pure ASCII representation
+
+Would you like me to update the implementation to use this new design?
