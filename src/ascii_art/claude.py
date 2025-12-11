@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""
-Claude ASCII Art Renderer.
+"""Claude ASCII Art Renderer.
 
 Safely displays predefined Claude ASCII art.
 """
-
 import sys
 from typing import TextIO, Optional
 
@@ -17,15 +15,32 @@ def validate_ascii_art(art: str) -> bool:
 
     Returns:
         bool: True if art passes safety checks, False otherwise
+
+    Raises:
+        ValueError: If art fails critical validation
     """
-    # Basic safety checks
-    return (
-        art is not None and
-        isinstance(art, str) and
-        len(art) > 0 and
-        len(art) <= 1024 and  # Reasonable size limit
-        all(ord(char) < 128 for char in art)  # ASCII only
-    )
+    if not art:
+        raise ValueError("ASCII art cannot be empty")
+
+    # Split art into lines
+    lines = art.splitlines()
+
+    # Validate line count and width
+    if len(lines) > 6:
+        raise ValueError(f"ASCII art exceeds max height (6 lines). Current height: {len(lines)}")
+
+    # Check line width
+    max_width = max(len(line) for line in lines)
+    if max_width > 40:
+        raise ValueError(f"ASCII art line exceeds max width (40 chars). Max width: {max_width}")
+
+    # ASCII character check
+    try:
+        art.encode('ascii')
+    except UnicodeEncodeError:
+        raise ValueError("ASCII art contains non-ASCII characters")
+
+    return True
 
 def render_claude_art(
     art: str,
@@ -41,9 +56,7 @@ def render_claude_art(
     Raises:
         ValueError: If art fails validation
     """
-    if not validate_ascii_art(art):
-        raise ValueError("Invalid ASCII art")
-
+    validate_ascii_art(art)
     print(art, file=file or sys.stdout)
 
 # Claude ASCII art constant
@@ -52,8 +65,7 @@ CLAUDE_ASCII_ART = r''' _____  _    _    ___   _   _  ____
 | |    | |  | | | | | || | | | |  | |
 | |    | |  | | | | | || | | | |  | |
 | |____| |__| | | |_| || |_| | |__| |
- \_____|\____/   \___/  \___/ \____/
-'''
+ \_____|\____/   \___/  \___/ \____/'''
 
 def main() -> None:
     """Entry point for rendering Claude ASCII art."""

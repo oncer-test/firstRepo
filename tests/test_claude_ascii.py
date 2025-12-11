@@ -9,10 +9,23 @@ from src.ascii_art.claude import validate_ascii_art, render_claude_art, CLAUDE_A
 def test_ascii_art_validation():
     """Test ASCII art validation function."""
     assert validate_ascii_art(CLAUDE_ASCII_ART)
-    assert not validate_ascii_art("")
-    assert not validate_ascii_art(None)
-    assert not validate_ascii_art("x" * 2000)  # Too long
-    assert len(max(CLAUDE_ASCII_ART.splitlines(), key=len)) <= 40  # Width check
+
+    with pytest.raises(ValueError):
+        validate_ascii_art("")
+
+    with pytest.raises(ValueError):
+        validate_ascii_art(None)
+
+    # Height constraint
+    with pytest.raises(ValueError):
+        validate_ascii_art("\n".join(["a"] * 7))
+
+    # Width constraint
+    with pytest.raises(ValueError):
+        validate_ascii_art("\n".join(["a" * 41]))
+
+    # Check line length
+    assert len(max(CLAUDE_ASCII_ART.splitlines(), key=len)) <= 40
 
 def test_render_claude_art():
     """Test ASCII art rendering."""
