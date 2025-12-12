@@ -22,10 +22,13 @@ def test_print_claude_art_custom():
     assert output.getvalue().strip() == custom_art.strip()
 
 
-def test_print_claude_art_invalid():
-    """Test invalid art handling."""
+def test_print_claude_art_invalid_empty_string():
+    """Test invalid art handling for empty string."""
     with pytest.raises(ValueError, match="Invalid ASCII art"):
-        print_claude_art(art="")  # Empty string
+        print_claude_art(art="")
 
+
+def test_print_claude_art_invalid_nonascii():
+    """Test invalid art handling for non-ASCII characters."""
     with pytest.raises(ValueError, match="Invalid ASCII art"):
         print_claude_art(art="😀")  # Non-ASCII characters

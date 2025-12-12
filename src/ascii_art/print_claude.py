@@ -21,8 +21,9 @@ def print_claude_art(
     Raises:
         ValueError: If art fails validation checks.
     """
-    if validate_ascii_art(art):
-        render_claude_art(art, file or stdout)
+    if not validate_ascii_art(art):
+        raise ValueError("Invalid ASCII art")
+    render_claude_art(art, file or stdout)
 
 
 def main() -> None:
